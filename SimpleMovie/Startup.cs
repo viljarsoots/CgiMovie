@@ -25,8 +25,8 @@ namespace SimpleMovie
 
             services.AddControllersWithViews();
 
-            services.AddDbContext<MovieContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("MovieContext")));
+            services.AddDbContext<MovieAppContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("MovieAppContext")));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

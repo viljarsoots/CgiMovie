@@ -1,0 +1,36 @@
+Cgi Assignment SPA SimpelMovie
+
+Preview.
+
+First thoughts were hopeful when I was reading assignment. 
+Unfortunately, I was reading diagonally so I missed the technology part.
+As I understood that .net is the requirement I started to look for tutorials.
+So the first one what popped up was Create a web app with ASP.NET Core MVC: 
+https://docs.microsoft.com/et-ee/aspnet/core/tutorials/first-mvc-app/?view=aspnetcore-3.1. 
+Steps.
+So I started with tutorial https://docs.microsoft.com/et-ee/aspnet/core/tutorials/first-mvc-app/?view=aspnetcore-3.1
+Then I tried to implement repository - service- controller layout
+based on my experience with Java. I wasted 21 hours for that.
+Then I realised that this is not working like that in the .net world.
+Since I had taken Sunday off for family I started again Monday morning.
+So I found another tutorial Implementing the Repository and 
+Unit of Work Patterns in an ASP.NET MVC Application.
+https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application#implement-a-generic-repository-and-a-unit-of-work-class
+then I tried to implement that logic to my project 
+I ended up getting some errors on making requests from the front end.  
+This took me about 18 hours and React part was missing at all. 
+So Wednesday morning I started to  Make things happening in React. 
+Since that was familiar to me there weren't that many issues.
+So Since React is more familiar to me I can explain what I used.
+so for displaying data, I used React Bootstrap Table feature.
+That also includes search and pagination options. 
+So local search can be performed from data received from the database. 
+For displaying movie data and description I used simple modal from @trendmicro.
+Since my front and back are not communicating in the way they should, 
+but the front should show some data I used mocraroo for creating dummy data. 
+So every time the app is loaded data is fetched from  mocaroo. 
+I used axios for that because it is again more familiar to me. 
+To get the idea what I have done previously with java you can 
+watch my repo in github: https://github.com/viljarsoots/
+
+

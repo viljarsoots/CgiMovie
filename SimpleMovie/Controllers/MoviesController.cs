@@ -2,92 +2,178 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using SimpleMovie.Data;
+using SimpleMovie.Models;
+using SimpleMovie.Repository;
+using SimpleMovie.Service;
 
 namespace SimpleMovie.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class MoviesController : Controller
     {
-        // GET: Movies
-        public ActionResult Index()
+        
+        // Since all these classes were made for Razor. methods are probably returning wong values.
+
+        private MovieAppService service = new MovieAppService();
+
+        [HttpGet]
+        public IEnumerable<Movie> Get()
         {
-            return View();
+            var movies = service.MovieRepository.Get();
+            return movies.ToList();
+            
         }
 
-        // GET: Movies/Details/5
-        public ActionResult Details(int id)
+        // GET: Movies
+        public IActionResult Index(string searchString)
         {
-            return View();
+            var movies = from m in service.MovieRepository.Get(includeProperties: "Category")
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.title.Contains(searchString));
+            }
+
+            return View(movies.ToList());
+        }
+        // GET: Movies/Details/5
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = service.MovieRepository.GetByID(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return View(movie);
         }
 
         // GET: Movies/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
 
         // POST: Movies/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create([Bind("id,title,year,description,rating")] Movie movie)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
+                service.MovieRepository.Insert(movie);
+                service.Save();
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(movie);
         }
 
         // GET: Movies/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = service.MovieRepository.GetByID(id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            return View(movie);
         }
 
         // POST: Movies/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(int id, [Bind("id,title,year,description,rating")] Movie movie)
         {
-            try
+            if (id != movie.id)
             {
-                // TODO: Add update logic here
+                return NotFound();
+            }
 
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    service.MovieRepository.Update(movie);
+                    service.Save();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MovieExists(movie.id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(movie);
         }
 
         // GET: Movies/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = service.MovieRepository.GetByID(id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return View(movie);
         }
 
         // POST: Movies/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var movie = service.MovieRepository.GetByID(id);
+            service.MovieRepository.Delete(id);
+            service.Save();
+            return RedirectToAction(nameof(Index));
         }
+
+        private bool MovieExists(int id)
+        {
+
+            var movie = service.MovieRepository.GetByID(id);
+
+            return movie.id == id;
+        }
+
+        [HttpPost]
+        public string Index(string searchString, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + searchString;
+        }
+
     }
 }
