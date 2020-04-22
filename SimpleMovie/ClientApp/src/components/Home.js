@@ -79,23 +79,7 @@ export class Home extends Component {
 			});
 		
 	}
-	/*
-	handeleMovieGet(id) {
-		let e = id + 1;
-		let data = null;
-		axios.get(DataUrl)
-		.then((response) => {
-			console.log(response);
-			data = response.data;
-			this.setState({ 'id': data[e].id });
-			this.setState({ 'title': data[e].title });
-			this.setState({ 'year': data[e].year });
-			this.setState({ 'rating': data[e].rating });
-			this.setState({ 'description': data[e].description });
-		}).catch((exception) => {
-			console.log(exception);
-		});
-	}*/
+	
 
 	handeleMovieGet(id) {
 		let e = id + 1;
@@ -132,7 +116,7 @@ export class Home extends Component {
 				text: '100', value: 100
 			}, {
 				text: 'All', value: this.state.movieData.length
-			}] // A numeric array is also available. the purpose of above example is custom the text
+			}] 
 		};
 
 		const columns = [{

@@ -32,5 +32,7 @@ So every time the app is loaded data is fetched from  mocaroo.
 I used axios for that because it is again more familiar to me. 
 To get the idea what I have done previously with java you can 
 watch my repo in github: https://github.com/viljarsoots/
+I was using visual studio for developing. At some point for front end only Visual Studio Code.
+Because it was easyer to follow.
 
 
